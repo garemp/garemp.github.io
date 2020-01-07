@@ -1,5 +1,17 @@
+<style type="text/css">
+    body {
+      margin: 0;
+    }
+    #container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+  
 <div id="container"></div>
-  <script src="/sigma.min.js"></script>
+
+<script src="/sigma.min.js"></script>
   <script>
     // Let's first initialize sigma:
     var s = new sigma('container');
