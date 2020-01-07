@@ -1,5 +1,5 @@
 <div id="container"></div>
-  <script src="./sigma.min.js"></script>
+  <script src="/sigma.min.js"></script>
   <script>
     // Let's first initialize sigma:
     var s = new sigma('container');
