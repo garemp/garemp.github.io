@@ -1,1 +1,462 @@
-<h1>Hello World</h1>
+<!--
+// Author:
+// Jin Yan, from School of Management and Engineering, 
+// Capital University of Economics and Business, Beijing, China
+// Copyright @ 2019-2020
+// All Right Reserved
+// GAREMP: Graphical Attribute and Relationship Explorer for Map Projections
+// http://garemp.github.io/
+// -->
+
+<link rel="stylesheet" href="./jquery/jquery-ui-1.12.1/jquery-ui.css">
+<!-- START SIGMA IMPORTS -->
+<script src="./src/sigma.core.js"></script>
+<script src="./src/conrad.js"></script>
+<script src="./src/utils/sigma.utils.js"></script>
+<script src="./src/utils/sigma.polyfills.js"></script>
+<script src="./src/sigma.settings.js"></script>
+<script src="./src/classes/sigma.classes.dispatcher.js"></script>
+<script src="./src/classes/sigma.classes.configurable.js"></script>
+<script src="./src/classes/sigma.classes.graph.js"></script>
+<script src="./src/classes/sigma.classes.camera.js"></script>
+<script src="./src/classes/sigma.classes.quad.js"></script>
+<script src="./src/classes/sigma.classes.edgequad.js"></script>
+<script src="./src/captors/sigma.captors.mouse.js"></script>
+<script src="./src/captors/sigma.captors.touch.js"></script>
+<script src="./src/renderers/sigma.renderers.canvas.js"></script>
+<script src="./src/renderers/sigma.renderers.webgl.js"></script>
+<script src="./src/renderers/sigma.renderers.svg.js"></script>
+<script src="./src/renderers/sigma.renderers.def.js"></script>
+<script src="./src/renderers/webgl/sigma.webgl.nodes.def.js"></script>
+<script src="./src/renderers/webgl/sigma.webgl.nodes.fast.js"></script>
+<script src="./src/renderers/webgl/sigma.webgl.edges.def.js"></script>
+<script src="./src/renderers/webgl/sigma.webgl.edges.fast.js"></script>
+<script src="./src/renderers/webgl/sigma.webgl.edges.arrow.js"></script>
+<script src="./src/renderers/canvas/sigma.canvas.labels.def.js"></script>
+<script src="./src/renderers/canvas/sigma.canvas.hovers.def.js"></script>
+<script src="./src/renderers/canvas/sigma.canvas.nodes.def.js"></script>
+<script src="./src/renderers/canvas/sigma.canvas.edges.def.js"></script>
+<script src="./src/renderers/canvas/sigma.canvas.edges.curve.js"></script>
+<script src="./src/renderers/canvas/sigma.canvas.edges.arrow.js"></script>
+<script src="./src/renderers/canvas/sigma.canvas.edges.curvedArrow.js"></script>
+<script src="./src/renderers/canvas/sigma.canvas.edgehovers.def.js"></script>
+<script src="./src/renderers/canvas/sigma.canvas.edgehovers.curve.js"></script>
+<script src="./src/renderers/canvas/sigma.canvas.edgehovers.arrow.js"></script>
+<script src="./src/renderers/canvas/sigma.canvas.edgehovers.curvedArrow.js"></script>
+<script src="./src/renderers/canvas/sigma.canvas.extremities.def.js"></script>
+<script src="./src/renderers/svg/sigma.svg.utils.js"></script>
+<script src="./src/renderers/svg/sigma.svg.nodes.def.js"></script>
+<script src="./src/renderers/svg/sigma.svg.edges.def.js"></script>
+<script src="./src/renderers/svg/sigma.svg.edges.curve.js"></script>
+<script src="./src/renderers/svg/sigma.svg.labels.def.js"></script>
+<script src="./src/renderers/svg/sigma.svg.hovers.def.js"></script>
+<script src="./src/middlewares/sigma.middlewares.rescale.js"></script>
+<script src="./src/middlewares/sigma.middlewares.copy.js"></script>
+<script src="./src/misc/sigma.misc.animation.js"></script>
+<script src="./src/misc/sigma.misc.bindEvents.js"></script>
+<script src="./src/misc/sigma.misc.bindDOMEvents.js"></script>
+<script src="./src/misc/sigma.misc.drawHovers.js"></script>
+<!-- END SIGMA IMPORTS -->
+<script src="./plugins/sigma.parsers.json/sigma.parsers.json.js"></script>
+<script src="./plugins/sigma.plugins.filter/sigma.plugins.filter.js"></script>
+<script src="./jquery/jquery-2.1.1.min.js"></script>
+<script src="./jquery/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+<script src="./plugins/sigma.renderers.customShapes/shape-library.js"></script>
+<script src="./plugins/sigma.renderers.customShapes/sigma.renderers.customShapes.js"></script>
+
+<script src="./plugins/sigma.renderers.customEdgeShapes/sigma.canvas.edges.dashed.js"></script>
+<script src="./plugins/sigma.renderers.customEdgeShapes/sigma.canvas.edges.dotted.js"></script>
+<script src="./plugins/sigma.renderers.customEdgeShapes/sigma.canvas.edges.parallel.js"></script>
+<script src="./plugins/sigma.renderers.customEdgeShapes/sigma.canvas.edges.tapered.js"></script>
+<script src="./plugins/sigma.renderers.customEdgeShapes/sigma.canvas.edgehovers.dashed.js"></script>
+<script src="./plugins/sigma.renderers.customEdgeShapes/sigma.canvas.edgehovers.dotted.js"></script>
+<script src="./plugins/sigma.renderers.customEdgeShapes/sigma.canvas.edgehovers.parallel.js"></script>
+<script src="./plugins/sigma.renderers.customEdgeShapes/sigma.canvas.edgehovers.tapered.js"></script>
+
+<!-- <script src="./maps.min.js"></script> -->
+<script src="./maps.js"></script>
+
+<title>GAREMP: Graphical Attribute and Relationship Explorer for Map Projections</title>
+
+<div id="container">
+  <style>
+    #graph-container {
+      top: 40px;
+      bottom: 40px;
+      left: 0;
+      right: 0;
+      position: absolute;
+    }
+
+    #legend-pane {
+      /*top: 10px;*/
+      bottom: 10px;
+      /*left: 10px;*/
+      right: 10px;
+      position: absolute;
+      width: 230px;
+      background-color: rgb(249, 247, 237);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    #color-count-info-pane {
+      /*top: 10px;*/
+      bottom: 10px;
+      /*left: 10px;*/
+      right: 10px;
+      position: absolute;
+      width: 230px;
+      background-color: rgb(249, 247, 237);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .more-legend-pane {
+      /*top: 10px;*/
+      bottom: 10px;
+      /*left: 10px;*/
+      right: 10px;
+      position: absolute;
+      width: 230px;
+      background-color: rgb(249, 247, 237);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    #year-pane {
+      bottom: 35px;
+      left: 10px;
+      position: absolute;
+      /* background-color: rgb(249, 247, 237); */
+      /* box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); */
+    }
+
+    #search-pane {
+      top: 10px;
+      left: 10px;
+      position: absolute;
+      /* background-color: rgb(249, 247, 237); */
+      /* box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); */
+    }
+
+    #checkbox-pane {
+      bottom: 10px;
+      left: 420px;
+      position: absolute;
+    }
+
+    #button-pane {
+      bottom: 10px;
+      right: 250px;
+      position: absolute;
+    }
+
+    #main-pane {
+      top: 10px;
+      /*bottom: 10px;*/
+      right: 10px;
+      position: absolute;
+      width: 230px;
+      background-color: rgb(249, 247, 237);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    #minor-pane {
+      top: 10px;
+      /*bottom: 10px;*/
+      left: 10px;
+      position: absolute;
+      width: 230px;
+      background-color: rgb(249, 247, 237);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    #mapl-pane {
+      top: 10px;
+      /*bottom: 10px;*/
+      left: 10px;
+      position: absolute;
+      width: 230px;
+      background-color: rgb(249, 247, 237);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    #mapr-pane {
+      top: 10px;
+      /*bottom: 10px;*/
+      right: 10px;
+      position: absolute;
+      width: 230px;
+      background-color: rgb(249, 247, 237);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    #mapl-pane>div {
+      margin: 10px;
+      overflow-x: auto;
+    }
+
+    #mapr-pane>div {
+      margin: 10px;
+      overflow-x: auto;
+    }
+
+    .line {
+      clear: both;
+      display: block;
+      width: 100%;
+      margin: 0;
+      padding: 12px 0 0 0;
+      border-bottom: 1px solid #aac789;
+      background: transparent;
+    }
+
+    h2,
+    h3,
+    h4 {
+      padding: 0;
+      font-variant: small-caps;
+    }
+
+    .green {
+      color: #437356;
+    }
+
+    h3.underline {
+      color: #437356;
+      background: #f4f0e4;
+      margin: 0;
+      border-radius: 2px;
+      padding: 8px 12px;
+      font-weight: 700;
+    }
+
+    .hidden {
+      display: none;
+      visibility: hidden;
+    }
+
+    input[type=range] {
+      width: 160px;
+    }
+
+    .circle {
+      width: 20px;
+      height: 20px;
+      background: red;
+      -moz-border-radius: 15px;
+      -webkit-border-radius: 15px;
+      border-radius: 15px;
+    }
+
+    #legend-title {
+      text-align: center;
+    }
+
+    .legend-text {
+      transform: translateY(-20%);
+      /**上移元素**/
+      -ms-transform: translateY(-20%);
+      -webkit-transform: translateY(-20%);
+    }
+
+    #copy-pane {
+      font: 10px Arial, sans-serif;
+      color: gray;
+      position: absolute;
+      bottom: 0px;
+    }
+
+    .popup-div {
+      position: absolute;
+      background: #ccc;
+      display: none;
+      padding: 5px;
+      border: 1px solid black;
+      z-index: 10;
+    }
+
+    .countfont {
+      font: 12px Arial, sans-serif;
+    }
+  </style>
+  <div id="graph-container"></div>
+
+  <div id="main-pane">
+
+  </div>
+
+  <div id="minor-pane">
+
+  </div>
+  <div class="more-legend-pane" id="type-pane">
+  </div>
+  <div class="more-legend-pane" id="prop-pane">
+  </div>
+
+  <div id="color-count-info-pane">
+    <div id="colorinfo-pane">
+    </div>
+
+    <div id="countinfo-pane">
+    </div>
+  </div>
+
+  <div id="legend-pane">
+    <table>
+      <tr>
+        <td>
+          <div class="circle" id="red-circle"></div>
+        </td>
+        <td><span id="red-info"></span></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="circle" id="green-circle"></div>
+        </td>
+        <td><span id="green-info"></span></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="circle" id="blue-circle"></div>
+        </td>
+        <td><span id="blue-info"></span></td>
+      </tr>
+    </table>
+  </div>
+
+  <div id="year-pane">
+    <p>
+      <label for="amount">filter by time range:</label>
+      <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+      <button id="reset-year">reset</button>
+    </p>
+    <div id="slider-range" style="left:20px;width:320px"></div>
+    <table width="370px">
+      <tr>
+        <td style="width:10%; text-align:center"><small>300BC</small></td>
+        <td style="width:10%; text-align:center"><small>1515</small></td>
+        <td style="width:10%; text-align:center"><small>1824</small></td>
+        <td style="width:10%; text-align:center"><small>1890</small></td>
+        <td style="width:10%; text-align:center"><small>1927</small></td>
+        <td style="width:10%; text-align:center"><small>1960</small></td>
+        <td style="width:10%; text-align:center"><small>1991</small></td>
+        <td style="width:10%; text-align:center"><small>2020</small></td>
+      </tr>
+    </table>
+  </div>
+
+  <div id="search-pane">
+    fuzzily search
+    <!-- &nbsp; -->
+    <input type="text" id="search-box"></input>
+    &nbsp;
+    or
+    <!-- &nbsp; -->
+    select by
+    <!-- &nbsp; -->
+    <select id="cat-l1">
+      <option>all categories</option>
+      <option>developable surfaces</option>
+      <option>distortions</option>
+      <option>aspects (partial)</option>
+      <option>same shape</option>
+      <option>similar shape</option>
+      <option>form of parallels</option>
+      <option>form of meridians</option>
+      <option>form of poles</option>
+      <option>combinations</option>
+      <option>authors (inc. aliases)</option>
+    </select>
+    <select id="cat-l2">
+      <option>no sub-categories</option>
+    </select>
+    &nbsp;
+    +
+    &nbsp;
+    <select id="cat-more">
+      <option>== no more filters ==</option>
+      <option>cylindrical</option>
+      <option>pseudocylindrical</option>
+      <option>conic</option>
+      <option>pseudoconic</option>
+      <option>azimuthal</option>
+      <option>lenticular</option>
+      <option>== no more filters ==</option>
+      <option>conformal</option>
+      <option>equal-area</option>
+      <option>equidistant</option>
+      <option>compromise</option>
+    </select>
+  </div>
+
+  <div id="checkbox-pane" style="text-align: left;">
+    <input id="drawcvco" type="checkbox" checked
+      title="click any node or any edge above would automatically uncheck this option" />
+    <label for="drawcvco" title="click any node or any edge above would automatically uncheck this option">
+      draw curved edges by colors
+    </label>
+    <input id="uselent" type="checkbox" checked title="click to change this option would automatically trigger
+the right-side button (clear node colors and reset filters)" />
+    <label for="uselent" title="click to change this option would automatically trigger
+the right-side button (clear node colors and reset filters)">
+      use Lenticular type for classification
+    </label>
+  </div>
+
+  <div id="button-pane" style="text-align: right;">
+    <button id="reset-all">clear node colors and reset filters</button>
+  </div>
+
+  <div id="link-hist-pane" class="popup-div" hidden>
+    2020-Jan-31:&nbsp;first release
+  </div>
+
+  <div id="link-auth-pane" class="popup-div" hidden>
+    Jin Yan, from School of Management and Engineering, <br>
+    Capital University of Economics and Business, Beijing, China
+  </div>
+
+  <div id="link-source-pane" class="popup-div" hidden>
+    GAREMP is original, some attributes and categories <br>
+    are derived from following websites:<br>
+    https://www.map-projections.net/<br>
+    https://www.giss.nasa.gov/tools/gprojector/help/projections/<br>
+    https://en.wikipedia.org/wiki/List_of_map_projections<br>
+  </div>
+
+  <div id="link-issue-pane" class="popup-div" hidden>
+    Click to report issues (bugs; attributes, categories, or connections correction;<br>
+    adding new map projections or connections; or others) on Github repository.
+  </div>
+
+  <div id="link-help-pane" class="popup-div" hidden>
+    Resolution of this page is at least 1366 * 768 pixels <br>
+    (runs in full screen) or 1440 * 900 (does not run in full screen).<br>
+    Click <b>Help</b> to get more information.
+  </div>
+
+  <div id="copy-pane">
+    <hr>
+    <span title="Graphical Attribute 
+and Relationship Explorer
+for Map Projections">GAREMP</span> 2019-2020 &copy; Jin Yan
+    <a height='2' id='link-auth' href='#'>+more infos</a> &nbsp; | &nbsp;
+    <a height='1' id='link-hist' href='#'>Histories</a> &nbsp; | &nbsp;
+    <a height='3' id='link-issue' target='_blank' href='https://github.com/garemp/garemp.github.io/issues/new'>Issues</a>
+    &nbsp; | &nbsp;
+    <a height='6' id='link-source' href='#'>Sources</a> &nbsp; | &nbsp;
+    <a height='3' id='link-help' href='#'>Help</a>
+    <hr>
+    <!-- Derived from Wikipedia’s <a href="https://en.wikipedia.org/wiki/List_of_map_projections">List_of_map_projections</a>
+    <hr>
+    All Rights Reserved by Jin Yan <a href="https://github.com/cfmmoc" target="_blank">(more infos)</a> &copy; 2019 <br>
+    Capital University of Economics and Business, China. <br> -->
+    <!--    Under GNU General Public Licence. <br>-->
+    <!-- Any forms of reuse/modification in any other places is forbidden.
+    <hr>
+    <a href="https://github.com/cfmmoc" target="_blank">Report mistakes</a>,
+    please <a href="https://github.com/cfmmoc" target="_blank">notify us</a> any infringements on our sites. -->
+  </div>
+</div>
+
+<script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101233886);</script>
+<script async src="//static.getclicky.com/js"></script>
