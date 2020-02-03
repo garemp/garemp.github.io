@@ -1,2 +1,2 @@
 GAREMP: Graphical Attribute and Relationship Explorer for Map Projections
-[garemp.github.io]
+[link to GAREMP!](http://garemp.github.io)
