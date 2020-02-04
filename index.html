@@ -73,12 +73,17 @@
 <script src="./plugins/sigma.renderers.customEdgeShapes/sigma.canvas.edgehovers.parallel.js"></script>
 <script src="./plugins/sigma.renderers.customEdgeShapes/sigma.canvas.edgehovers.tapered.js"></script>
 
-<script src="./maps.min.js"></script>
+<!-- <script src="./maps.min.js"></script> -->
+<script src="./maps.js"></script>
 
 <title>GAREMP: Graphical Attribute and Relationship Explorer for Map Projections</title>
 
 <div id="container">
   <style>
+    * {
+      color: #000000;
+    }
+
     #graph-container {
       top: 40px;
       bottom: 40px;
@@ -407,8 +412,14 @@ the right-side button (clear node colors and reset filters)">
 
   <div id="link-hist-pane" class="popup-div" hidden>
     <table>
-      <tr><td>2020-Jan-31:</td><td>first release</td></tr>
-      <tr><td>2020-Feb-1:</td><td>dataset added (102 map projections)</td></tr>
+      <tr>
+        <td>2020-Jan-31:</td>
+        <td>first release</td>
+      </tr>
+      <tr>
+        <td>2020-Feb-1:</td>
+        <td>dataset added (102 map projections)</td>
+      </tr>
     </table>
   </div>
 
@@ -423,9 +434,9 @@ the right-side button (clear node colors and reset filters)">
   <div id="link-source-pane" class="popup-div" hidden>
     GAREMP is original, some attributes and categories <br>
     are derived from following websites:<br>
-    https://www.map-projections.net/<br>
-    https://www.giss.nasa.gov/tools/gprojector/help/projections/<br>
-    https://en.wikipedia.org/wiki/List_of_map_projections<br>
+    <a target='_blank' href="https://www.map-projections.net/">https://www.map-projections.net/</a><br>
+    <a target='_blank' href="https://www.giss.nasa.gov/tools/gprojector/help/projections/">https://www.giss.nasa.gov/tools/gprojector/help/projections/</a><br>
+    <a target='_blank' href="https://en.wikipedia.org/wiki/List_of_map_projections">https://en.wikipedia.org/wiki/List_of_map_projections</a><br>
   </div>
 
   <div id="link-issue-pane" class="popup-div" hidden>
@@ -446,12 +457,13 @@ the right-side button (clear node colors and reset filters)">
     <span title="Graphical Attribute 
 and Relationship Explorer
 for Map Projections">GAREMP</span> 2019-2020 &copy; Jin Yan
-    <a height='5' id='link-auth' href='#'>+more infos</a> &nbsp; | &nbsp;
-    <a height='2' id='link-hist' href='#'>Histories</a> &nbsp; | &nbsp;
-    <a height='3' id='link-issue' target='_blank' href='https://github.com/garemp/garemp.github.io/issues/new'>Issues</a>
+    <a class='link' height='5' id='link-auth' href='#'>+more infos</a> &nbsp; | &nbsp;
+    <a class='link' height='2' id='link-hist' href='#'>Histories</a> &nbsp; | &nbsp;
+    <a class='link' height='3' id='link-issue' target='_blank'
+      href='https://github.com/garemp/garemp.github.io/issues/new'>Issues</a>
     &nbsp; | &nbsp;
-    <a height='6' id='link-source' href='#'>Sources</a> &nbsp; | &nbsp;
-    <a height='5' id='link-help' href='#'>Help</a>
+    <a class='link' height='6' id='link-source' href='#'>Sources</a> &nbsp; | &nbsp;
+    <a class='link' height='5' id='link-help' href='#'>Help</a>
     <hr>
   </div>
 </div>
