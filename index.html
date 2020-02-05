@@ -73,7 +73,8 @@
 <script src="./plugins/sigma.renderers.customEdgeShapes/sigma.canvas.edgehovers.parallel.js"></script>
 <script src="./plugins/sigma.renderers.customEdgeShapes/sigma.canvas.edgehovers.tapered.js"></script>
 
-<script src="./maps.min.js"></script>
+<!-- <script src="./maps.min.js"></script> -->
+<script src="./maps.js"></script>
 
 <title>GAREMP: Graphical Attribute and Relationship Explorer for Map Projections</title>
 
@@ -170,36 +171,6 @@
       width: 230px;
       background-color: rgb(249, 247, 237);
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    }
-
-    #mapl-pane {
-      top: 10px;
-      /*bottom: 10px;*/
-      left: 10px;
-      position: absolute;
-      width: 230px;
-      background-color: rgb(249, 247, 237);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    }
-
-    #mapr-pane {
-      top: 10px;
-      /*bottom: 10px;*/
-      right: 10px;
-      position: absolute;
-      width: 230px;
-      background-color: rgb(249, 247, 237);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    }
-
-    #mapl-pane>div {
-      margin: 10px;
-      overflow-x: auto;
-    }
-
-    #mapr-pane>div {
-      margin: 10px;
-      overflow-x: auto;
     }
 
     .line {
@@ -429,9 +400,9 @@ the right-side button (clear node colors and reset filters)">
   </div>
 
   <div id="link-auth-pane" class="popup-div" hidden>
+    GAREMP: Graphical Attribute and Relationship Explorer for Map Projections<br>
     Copyright @ 2019-2020<br>
     All Right Reserved<br>
-    GAREMP: Graphical Attribute and Relationship Explorer for Map Projections<br>
     Jin Yan, from School of Management and Engineering, <br>
     Capital University of Economics and Business, Beijing, China.<br>
     Offline processing of GAREMP is at <a target='_blank' href="https://github.com/garemp/GAREMP_offline">https://github.com/garemp/GAREMP_offline</a>.<br>
@@ -452,6 +423,7 @@ the right-side button (clear node colors and reset filters)">
   </div>
 
   <div id="link-help-pane" class="popup-div" hidden>
+    It is recommended to use Google Chrome.<br>
     Resolution of this page is at least 1366 * 768 pixels <br>
     (runs in full screen mode, press <b>F11</b> to enter) or <br>
     1440 * 900 pixels (does not need to run in full screen mode).<br>
@@ -470,7 +442,7 @@ for Map Projections">GAREMP</span> 2019-2020 &copy; Jin Yan
       href='https://github.com/garemp/garemp.github.io/issues/new'>Issues</a>
     &nbsp; | &nbsp;
     <a class='link' height='7' id='link-source' href='#'>Sources</a> &nbsp; | &nbsp;
-    <a class='link' height='6' id='link-help' href='#'>Help</a>
+    <a class='link' height='7' id='link-help' href='#'>Help</a>
     <hr>
   </div>
 </div>
