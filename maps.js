@@ -8,6 +8,7 @@
 
 var s;
 var loaded = 0;
+var mobile_dev = false;
 
 drawcvco = true;
 uselent = false;
@@ -149,6 +150,8 @@ urls = [
 
 function updateColorinfo(sel, cat_l2) {
   $("#colorinfo-pane").empty();
+  if (mobile_dev)
+    $("#color-count-info-pane").css({ 'bottom': parseInt($('#drawcvco').css('height')) + 20 + 'px' });
   $("#colorinfo-pane").append("<div id='legend-title'><b>Legends</b></div>");
   var offset = 0;
   if (sel == "developable surfaces") {
@@ -264,6 +267,8 @@ $(function () {
     max: arr.length - 1,
     values: [0, arr.length - 1],
     slide: function (event, ui) {
+      nodes = s.graph.nodes();
+      edges = s.graph.edges();
       for (i = 0; i < nodes.length; i++) {
         nodes[i].yearviz = true;
       }
@@ -450,13 +455,18 @@ urls.forEach(function (url) {
         s.bind('clickStage', function (e) {
           $("#type-pane").hide();
           $("#prop-pane").hide();
-          $("#list-box").val("------请选择------");
+          // $("#list-box").val("------请选择------");
           // showMapInfo("mapl", null);
           // showMapInfo("mapr", null);
           clean = true;
           //forceCleanNode(e);
           $("#legend-pane").hide();
-          $('#search-box').focus().val('');
+          if (mobile_dev) {
+            $('#search-box').val('');
+          }
+          else {
+            $('#search-box').focus().val('');
+          }
           offset = 0;
           cur_node = null;
           cur_neig = null;
@@ -509,7 +519,7 @@ urls.forEach(function (url) {
             // Refresh the display:
             s.refresh();
 
-            updateCountinfo(101);
+            updateCountinfo(102);
 
             nolegendfornodes();
 
@@ -539,6 +549,8 @@ function updatePane(pane, node, rel) {
   nodes = s.graph.nodes();
   edges = s.graph.edges();
   $(pane).empty();
+  if (mobile_dev)
+    $(pane).css({ 'top': parseInt($('#cat-l1').css('height')) + 20 + 'px' });
   if (node.name)
     $(pane).append("<h3 class=\"underline\">" + node.name + "</h3>");
   else
@@ -594,7 +606,7 @@ function updatePane(pane, node, rel) {
     ptrlen = Object.values(visedge).length;
     if (ptrlen == 0)
       return;
-    $(pane).append("<hr><div id=\"show-rel\" style=\"text-align:center\"><button id=\"show-btn\">show relations</button></div>");
+    $(pane).append("<hr><div id=\"show-rel\" style=\"text-align:center\"><button id=\"show-btn\">show relations (" + ptrlen + ")</button></div>");
     $(pane).append("<div id=\"rel-area\"</div>");
     // console.log(visedge);
     s.refresh();
@@ -651,11 +663,13 @@ function updateLegendbyEdge(node1, node2) {
 
 function nolegendfornodes() {
   $("#colorinfo-pane").empty();
+  if (mobile_dev)
+    $("#color-count-info-pane").css({ 'bottom': parseInt($('#drawcvco').css('height')) + 20 + 'px' });
   $("#colorinfo-pane").append("<div id='legend-title'><b>No Legend for Nodes</b></div>");
 };
 
 var sub_categories = new Map();
-sub_categories.set("developable surfaces", ["cylindrical", "pseudocylindrical", "conic", "pseudoconic", "azimuthal", "lenticular", "miscellaneous"]);
+sub_categories.set("developable surfaces", ["cylindrical", "conic", "azimuthal", "pseudocylindrical", "pseudoconic", "polyconic", "lenticular", "miscellaneous"]);
 sub_categories.set("distortions", ["conformal", "equal-area", "equidistant", "compromise"]);
 sub_categories.set("aspects (partial)", ["normal", "transverse", "oblique"]);
 sub_categories.set("same shape", ["2:1 ellipse", "other same shapes"]);
@@ -677,13 +691,181 @@ function catReset() {
       return true;
     })
     .apply();
-  updateCountinfo(101);
+  updateCountinfo(102);
   nolegendfornodes();
   $('#cat-l1').val('all categories');
   $("#cat-l2").empty();
   $("#cat-l2").append("<option>no sub-categories</option>");
   $('#cat-l2').val('no sub-categories');
   $('#cat-more').val('== no more filters ==');
+}
+
+function catFilter(sel, cat_l2, n) {
+  var found = false;
+  for (i = 0; i < Object.values(n.attributes).length; i++) {
+    Object.values(cat_l2).forEach(function (c, idx) {
+      if (sel == "developable surfaces") {
+        if (n.attributes[i] == "cylindrical") {
+          found = true;
+          n.color = colormap[0];
+        }
+        else if (n.attributes[i] == "conic") {
+          found = true;
+          n.color = colormap[1];
+        }
+        else if (n.attributes[i] == "azimuthal") {
+          found = true;
+          n.color = colormap[2];
+        }
+        else if (n.attributes[i] == "pseudocylindrical") {
+          found = true;
+          n.type = 'image';
+          n.url = 'img/r,y.png';
+        }
+        else if (n.attributes[i] == "pseudoconic") {
+          found = true;
+          n.type = 'image';
+          n.url = 'img/g,y.png';
+        }
+        else if (n.attributes[i] == "pseudoazimuthal") {
+          found = true;
+          n.type = 'image';
+          n.url = 'img/mby.png';
+        }
+        else if (n.attributes[i] == "miscellaneous") {
+          found = true;
+          n.color = "#000";
+        }
+        else if (n.attributes[i] == "polyhedral") {
+          found = true;
+          n.type = 'image';
+          n.url = 'img/icosa.png';
+        }
+        if (n.label == "Aitoff" || n.label == "Wagner 7" || n.label == "Wagner 8" || n.label == "Wagner 9") {
+          found = true;
+          n.type = 'image';
+          if (uselent)
+            n.url = 'img/mbo.png';
+          else
+            n.url = 'img/b,o.png';
+        }
+        else if (n.label == "Hammer" || n.label == "Winkel 3") {
+          found = true;
+          n.type = 'image';
+          if (uselent)
+            n.url = 'img/mbok.png';
+          else
+            n.url = 'img/bok.png';
+        }
+        else if (n.label == "Ortelius Oval" || n.label == "Apian Globular I" || n.label == "Bacon Globular") {
+          found = true;
+          n.type = 'image';
+          n.url = 'img/ryk.png';
+        }
+        else if (n.label == "Strebe 1995") {
+          found = true;
+          n.type = 'image';
+          n.url = 'img/m-o.png';
+        }
+        else if (n.label == "Ciric I" || n.label == "A4" || n.label == "Dedistort") {
+          found = true;
+          n.color = "#F0F";
+        }
+        return;
+      }
+      if (sel == "same shape") {
+        if (n.attributes[i].startsWith("same shape gp")) {
+          val = n.attributes[i].substring(13);
+          found = true;
+          n.type = 'image';
+          n.url = 'img/gp' + val + '.png';
+        }
+      }
+      if (sel == "similar shape") {
+        if (n.attributes[i].startsWith("cylindrical equal-area")) {
+          found = true;
+          n.type = 'image';
+          n.url = 'img/c,m.png';
+        }
+        if (n.label == "Sinusoidal") {
+          found = true;
+          n.type = 'image';
+          n.url = 'img/gpb,g.png';
+        }
+        if (n.label == "Boggs eumorphic") {
+          found = true;
+          n.type = 'image';
+          n.url = 'img/g-r.png';
+        }
+        if (n.label == "Siemon IV") {
+          found = true;
+          n.type = 'image';
+          n.url = 'img/g-rk.png';
+        }
+        if (n.label == "Putniņš P1" || n.label == "Putniņš P2") {
+          found = true;
+          n.type = 'image';
+          n.url = 'img/gray-r.png';
+        }
+        if (n.label == "Putniņš P3'" || n.label == "Putniņš P4'") {
+          found = true;
+          n.type = 'image';
+          n.url = 'img/gray-ok.png';
+        }
+        if (n.label == "Wagner 1" || n.label == "Wagner 2" || n.label == "Wagner 3") {
+          found = true;
+          n.type = 'image';
+          n.url = 'img/gray-o.png';
+        }
+      }
+      if (sel == "combinations") {
+        if (n.attributes[i] == "fusion-src" || n.attributes[i] == "blending-src" || n.attributes[i] == "const-src") {
+          found = true;
+          n.type = 'def';
+          n.color = colormap[0];
+        }
+        if (n.label == "Hammer" || n.label == "Aitoff") {
+          n.type = 'image';
+          n.url = 'img/r,m.png';
+        }
+        if (n.label == "Mollweide") {
+          n.type = 'image';
+          n.url = 'img/r,c.png';
+        }
+        if (n.label == "Collignon") {
+          n.type = 'image';
+          n.url = 'img/c,r.png';
+        }
+      }
+      if (n.attributes[i] == c) {
+        found = true;
+        if (sel == "combinations") {
+          n.type = 'def';
+          n.color = colormap[idx + 1];
+        }
+        else if (sel == "distortions") {
+          if (n.label == "Sinusoidal" || n.label == "Werner") {
+            n.type = 'image';
+            n.url = 'img/gpb,g.png';
+          }
+          else {
+            n.type = 'def';
+            n.color = colormap[idx];
+          }
+        }
+        else {
+          n.type = 'def';
+          n.color = colormap[idx];
+        }
+      }
+    })
+  }
+  return {
+    found: found,
+    type: n.type,
+    color: n.color,
+    url: n.url
+  }
 }
 
 function catChange() {
@@ -717,54 +899,102 @@ function catChange() {
     .undo('categories')
     .nodesBy(function (n) {
       var found = false;
-      for (i = 0; i < Object.values(n.attributes).length; i++) {
-        Object.values(cat_l2).forEach(function (c, idx) {
-          if (sel == "developable surfaces") {
-            if (n.attributes[i] == "cylindrical") {
-              found = true;
-              n.color = colormap[0];
-            }
-            else if (n.attributes[i] == "conic") {
-              found = true;
-              n.color = colormap[1];
-            }
-            else if (n.attributes[i] == "azimuthal") {
-              found = true;
-              n.color = colormap[2];
-            }
-            else if (n.attributes[i] == "pseudocylindrical") {
+      ret = catFilter(sel, cat_l2, n);
+      if (ret.found)
+        found = true;
+      n.type = ret.type;
+      n.color = ret.color;
+      n.url = ret.url;
+      if (!found)
+        n.cat1viz = false;
+      if (found && n.cat2viz)
+        viscount++;
+      return found && n.cat2viz && n.yearviz;
+    }, 'categories')
+    .apply();
+  updateCountinfo(viscount);
+  updateColorinfo(sel, cat_l2);
+}
+
+function subcatChange() {
+  $("#main-pane").empty();
+  $("#minor-pane").empty();
+
+  sel = $(this).val();
+  idx = this.selectedIndex - 1;
+
+  for (i = 0; i < nodes.length; i++) {
+    nodes[i].cat1viz = true;
+  }
+  if (sel == "all sub-categories") {
+    parsel = $("#cat-l1").val();
+    var cat_l2 = sub_categories.get(parsel);
+    var viscount = 0;
+    filter
+      .undo('categories')
+      .nodesBy(function (n) {
+        var found = false;
+        ret = catFilter(parsel, cat_l2, n);
+        if (ret.found)
+          found = true;
+        n.type = ret.type;
+        n.color = ret.color;
+        n.url = ret.url;
+        if (!found)
+          n.cat1viz = false;
+        if (found && n.cat2viz)
+          viscount++;
+        return found && n.cat2viz && n.yearviz;
+      }, 'categories')
+      .apply();
+    updateCountinfo(viscount);
+  }
+  else {
+    var viscount = 0;
+    filter
+      .undo('categories')
+      .nodesBy(function (n) {
+        var found = false;
+        for (i = 0; i < Object.values(n.attributes).length; i++) {
+          if (n.attributes[i] == sel) {
+            found = true;
+            n.type = 'def';
+            n.color = colormap[idx];
+            if (sel == "fusion" || sel == "blending" || sel == "construction")
+              n.color = colormap[idx + 1];
+          }
+          if (sel == "cylindrical") {
+            n.color = colormap[0];
+          }
+          if (sel == "conic") {
+            n.color = colormap[1];
+          }
+          if (sel == "azimuthal") {
+            n.color = colormap[2];
+          }
+          if (sel == "pseudocylindrical") {
+            n.type = 'image';
+            n.url = 'img/r,y.png';
+            if (n.label == "Ortelius Oval" || n.label == "Apian Globular I" || n.label == "Bacon Globular") {
               found = true;
               n.type = 'image';
-              n.url = 'img/r,y.png';
+              n.url = 'img/ryk.png';
             }
-            else if (n.attributes[i] == "pseudoconic") {
-              found = true;
+          }
+          if (sel == "pseudoconic") {
+            n.type = 'image';
+            n.url = 'img/g,y.png';
+          }
+          if (sel == "polyconic") {
+            if (n.label == "Strebe 1995") {
               n.type = 'image';
-              n.url = 'img/g,y.png';
+              n.url = 'img/m-o.png';
             }
-            else if (n.attributes[i] == "pseudoazimuthal") {
-              found = true;
-              n.type = 'image';
-              n.url = 'img/mby.png';
-            }
-            else if (n.attributes[i] == "miscellaneous") {
-              found = true;
-              n.color = "#000";
-            }
-            else if (n.attributes[i] == "polyhedral") {
-              found = true;
-              n.type = 'image';
-              n.url = 'img/icosa.png';
-            }
-            if (n.label == "Aitoff" || n.label == "Wagner 7" || n.label == "Wagner 8" || n.label == "Wagner 9") {
-              found = true;
-              n.type = 'image';
-              if (uselent)
-                n.url = 'img/mbo.png';
-              else
-                n.url = 'img/b,o.png';
-            }
-            else if (n.label == "Hammer" || n.label == "Winkel 3") {
+          }
+          if (sel == "pseudoazimuthal") {
+            n.type = 'image';
+            n.url = 'img/mby.png';
+            if (n.label == "Hammer" || n.label == "Winkel 3") {
               found = true;
               n.type = 'image';
               if (uselent)
@@ -772,41 +1002,45 @@ function catChange() {
               else
                 n.url = 'img/bok.png';
             }
-            else if (n.label == "Ortelius Oval" || n.label == "Apian Globular I" || n.label == "Bacon Globular") {
-              found = true;
+            if (n.label == "Aitoff" || n.label == "Wagner 7" || n.label == "Wagner 8" || n.label == "Wagner 9") {
               n.type = 'image';
-              n.url = 'img/ryk.png';
-            }
-            else if (n.label == "Strebe 1995") {
-              found = true;
-              n.type = 'image';
-              n.url = 'img/m-o.png';
-            }
-            else if (n.label == "Ciric I" || n.label == "A4" || n.label == "Dedistort") {
-              found = true;
-              n.color = "#F0F";
-            }
-            return;
-          }
-          if (sel == "same shape") {
-            if (n.attributes[i].startsWith("same shape gp")) {
-              val = n.attributes[i].substring(13);
-              found = true;
-              n.type = 'image';
-              n.url = 'img/gp' + val + '.png';
+              if (uselent)
+                n.url = 'img/mbo.png';
+              else
+                n.url = 'img/b,o.png';
             }
           }
-          if (sel == "similar shape") {
-            if (n.attributes[i].startsWith("cylindrical equal-area")) {
-              found = true;
+          if (sel == "miscellaneous") {
+            n.color = "#000";
+            if (n.label == "Hammer" || n.label == "Winkel 3") {
               n.type = 'image';
-              n.url = 'img/c,m.png';
+              if (uselent)
+                n.url = 'img/mbok.png';
+              else
+                n.url = 'img/bok.png';
             }
-            if (n.label == "Sinusoidal") {
-              found = true;
+          }
+          if (sel == "polyhedral") {
+            n.type = 'image';
+            n.url = 'img/icosa.png';
+          }
+          if (sel == "equal-area" || sel == "equidistant") {
+            if (n.label == "Sinusoidal" || n.label == "Werner") {
               n.type = 'image';
               n.url = 'img/gpb,g.png';
             }
+          }
+          if (sel == "other same shapes" && n.attributes[i].startsWith("same shape gp")) {
+            val = n.attributes[i].substring(13);
+            found = true;
+            n.type = 'image';
+            n.url = 'img/gp' + val + '.png';
+          }
+          if (sel == "similar shape" && (n.label == "Boggs eumorphic" ||
+            n.label == "Siemon IV" || n.label == "Putniņš P1" ||
+            n.label == "Putniņš P2" || n.label == "Putniņš P3'" ||
+            n.label == "Putniņš P4'" || n.label == "Wagner 1" ||
+            n.label == "Wagner 2" || n.label == "Wagner 3")) {
             if (n.label == "Boggs eumorphic") {
               found = true;
               n.type = 'image';
@@ -833,7 +1067,23 @@ function catChange() {
               n.url = 'img/gray-o.png';
             }
           }
-          if (sel == "combinations") {
+          if (sel == "(may be) interrupted" || sel == "Bonne group") {
+            if (n.label == "Sinusoidal") {
+              found = true;
+              n.type = 'image';
+              n.url = 'img/gpb,g.png';
+            }
+          }
+          if (sel == "cylindrical equal-area family" || sel == "stretching") {
+            if (n.attributes[i].startsWith("cylindrical equal-area")) {
+              found = true;
+              n.type = 'image';
+              n.url = 'img/c,m.png';
+            }
+          }
+          if ((sel == "fusion" && n.attributes[i] == "fusion-src") ||
+            (sel == "blending" && n.attributes[i] == "blending-src") ||
+            (sel == "construction" && n.attributes[i] == "const-src")) {
             if (n.attributes[i] == "fusion-src" || n.attributes[i] == "blending-src" || n.attributes[i] == "const-src") {
               found = true;
               n.type = 'def';
@@ -852,105 +1102,6 @@ function catChange() {
               n.url = 'img/c,r.png';
             }
           }
-          if (n.attributes[i] == c) {
-            found = true;
-            if (sel == "combinations") {
-              n.type = 'def';
-              n.color = colormap[idx + 1];
-            }
-            else if (sel == "distortions") {
-              if (n.label == "Sinusoidal" || n.label == "Werner") {
-                n.type = 'image';
-                n.url = 'img/gpb,g.png';
-              }
-              else {
-                n.type = 'def';
-                n.color = colormap[idx];
-              }
-            }
-            else {
-              n.type = 'def';
-              n.color = colormap[idx];
-            }
-          }
-        })
-      }
-      if (!found)
-        n.cat1viz = false;
-      if (found && n.cat2viz)
-        viscount++;
-      return found && n.cat2viz && n.yearviz;
-    }, 'categories')
-    .apply();
-  updateCountinfo(viscount);
-  updateColorinfo(sel, cat_l2);
-}
-
-function subcatChange() {
-  $("#main-pane").empty();
-  $("#minor-pane").empty();
-
-  sel = $(this).val();
-  for (i = 0; i < nodes.length; i++) {
-    nodes[i].cat1viz = true;
-  }
-  if (sel == "all sub-categories") {
-    parsel = $("#cat-l1").val();
-    var cat_l2 = sub_categories.get(parsel);
-    var viscount = 0;
-    filter
-      .undo('categories')
-      .nodesBy(function (n) {
-        var found = false;
-        for (i = 0; i < Object.values(n.attributes).length; i++) {
-          Object.values(cat_l2).forEach(function (c) {
-            if (n.attributes[i] == c)
-              found = true;
-            if (parsel == "combinations")
-              if (n.attributes[i] == "fusion-src" || n.attributes[i] == "blending-src" || n.attributes[i] == "const-src")
-                found = true;
-            if (parsel == "same shape" && n.attributes[i].startsWith("same shape gp"))
-              found = true;
-            if (parsel == "similar shape" && (n.label == "Boggs eumorphic" ||
-            n.label == "Siemon IV" || n.label == "Putniņš P1" ||
-            n.label == "Putniņš P2" || n.label == "Putniņš P3'" ||
-            n.label == "Putniņš P4'" || n.label == "Wagner 1" ||
-            n.label == "Wagner 2" || n.label == "Wagner 3"))
-              found = true;
-          })
-        }
-        if (!found)
-          n.cat1viz = false;
-        if (found && n.cat2viz)
-          viscount++;
-        return found && n.cat2viz && n.yearviz;
-      }, 'categories')
-      .apply();
-    updateCountinfo(viscount);
-  }
-  else {
-    var viscount = 0;
-    filter
-      .undo('categories')
-      .nodesBy(function (n) {
-        var found = false;
-        for (i = 0; i < Object.values(n.attributes).length; i++) {
-          if (n.attributes[i] == sel)
-            found = true;
-          if (sel == "other same shapes" && n.attributes[i].startsWith("same shape gp"))
-            found = true;
-          if (sel == "similar shape" && (n.label == "Boggs eumorphic" ||
-            n.label == "Siemon IV" || n.label == "Putniņš P1" ||
-            n.label == "Putniņš P2" || n.label == "Putniņš P3'" ||
-            n.label == "Putniņš P4'" || n.label == "Wagner 1" ||
-            n.label == "Wagner 2" || n.label == "Wagner 3"))
-            found = true;
-          if (sel == "fusion" && n.attributes[i] == "fusion-src")
-            found = true;
-          if (sel == "blending" && n.attributes[i] == "blending-src")
-            found = true;
-          if (sel == "construction" && n.attributes[i] == "const-src")
-            found = true;
         }
         if (!found)
           n.cat1viz = false;
@@ -1062,9 +1213,9 @@ $(document).ready(function () {
     $('#cat-more').append('<option>compromise</option>');
     $('#reset-all').click();
     if (uselent) {
-      sub_categories.set("developable surfaces", ["cylindrical", "pseudocylindrical", "conic", "pseudoconic", "azimuthal", "lenticular", "miscellaneous"]);
+      sub_categories.set("developable surfaces", ["cylindrical", "conic", "azimuthal", "pseudocylindrical", "pseudoconic", "polyconic", "lenticular", "miscellaneous"]);
     } else {
-      sub_categories.set("developable surfaces", ["cylindrical", "pseudocylindrical", "conic", "pseudoconic", "azimuthal", "miscellaneous"]);
+      sub_categories.set("developable surfaces", ["cylindrical", "conic", "azimuthal", "pseudocylindrical", "pseudoconic", "polyconic", "miscellaneous"]);
     }
   });
   $('#drawcvco').change(function () {
@@ -1083,12 +1234,52 @@ $(document).ready(function () {
       s.refresh();
     }
   });
-  $('a').mouseover(function(e){
+  $('.link').mouseover(function (e) {
+    // console.log('-------        '+$(this).attr('id'));
+    $('.popup-div').not('#' + $(this).attr('id') + '-pane').hide();
     h = parseInt($(this).attr('height'));
-    $('#'+$(this).attr('id')+'-pane').css({'position': 'absolute', 'top': e.pageY-h*20, 'left': e.pageX+10});
-    $('#'+$(this).attr('id')+'-pane').show();
+    $('#' + $(this).attr('id') + '-pane').css({ 'position': 'absolute', 'top': e.pageY - h * 20, 'left': e.pageX + 10 });
+    $('#' + $(this).attr('id') + '-pane').stop().show();
   });
-  $('a').mouseout(function(){
-    $('#'+$(this).attr('id')+'-pane').hide();
+  $('.link').mouseout(function () {
+    // console.log('       ------- '+$(this).attr('id'));
+    $('#' + $(this).attr('id') + '-pane').stop().fadeOut(3000);
   });
+  $('.popup-div').mouseover(function () {
+    // console.log('>>>>>>        '+$(this).attr('id'));
+    $(this).stop().fadeIn();
+    return false;
+  });
+  $('.popup-div').mouseout(function () {
+    // console.log('       >>>>>>'+$(this).attr('id'));
+    $(this).stop().fadeOut(3000);
+    return false;
+  });
+  $(window).resize(function () {
+    s.refresh();
+  });
+  var h = $(document).height();
+  var w = $(document).width();
+  // console.log(h);
+  // console.log(w);
+  // console.log($('#tipfade').html());
+  if (w < h) {
+    $('#tipfade').css({ 'height': '150' });
+    $('#tipfade').html('<div style="text-align: center;position: relative;top:10%; font-size: 24px; color: #f4f0e4;">Warning: You may view on <span style="border: solid 1px;color: #f4f0e4;">mobile</span> device, some contents may be not optimized appropriately.</div>');
+    mobile_dev = true;
+    $("#search-box").attr("disabled", "disabled");
+    $("#search-text").attr("title", "Search box is disabled temporarily on mobile device.");
+    $("<br>").insertBefore("#uselent");
+    $("#button-pane").css({ 'right': '10px' });
+  }
+  else if (w < 1280 || h < 600) {
+    $('#tipfade').html('<div style="text-align: center;position: relative;top:10%; font-size: 24px; color: #f4f0e4;">Warning: Screen resolusion may be too <span style="border: solid 1px;color: #f4f0e4;">low</span> to render contents.</div>');
+  }
+  if ((w == 1360 || w == 1366 || w == 1440 || w == 1536 || w == 1600 || w == 1680) &&
+    (h == 768 || h == 800 || h == 864 || h == 900 || h == 1024 || h == 1050)) {
+    $('#tipfade').hide();
+  }
+  else {
+    $('#tipfade').hide().fadeIn(2000).delay(3000).fadeOut(3000);
+  }
 });
