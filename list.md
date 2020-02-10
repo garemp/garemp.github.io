@@ -33,3 +33,6 @@
         </tbody>
     </tr>
 </table>
+
+<div id="ph-hist">
+</div>
