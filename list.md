@@ -29,7 +29,6 @@
             <th>Comments</th>
         </thead>
         <tbody id="list-body">
-
         </tbody>
     </tr>
 </table>
