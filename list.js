@@ -1,4 +1,5 @@
 $('h1').remove();
+$(".footer").remove();
 
 $().ready(function () {
     $("#ph-issue").load("./issue.html");
