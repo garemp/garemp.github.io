@@ -15,8 +15,13 @@
 </h4>
 <hr>
 
+<a href="https://github.com/garemp/garemp.github.io/issues/new">
+<input type=button value="Report Issues" >
+</a>
 <div id="ph-issue">
 </div>
+
+<hr>
 
 <h4>Full plain list of map projections used in GAREMP</h4>
 
@@ -36,11 +41,20 @@
     </tr>
 </table>
 
+<tr>    
+<h4>History of GAREMP</h4>
+
 <div id="ph-hist">
 </div>
 
+<tr>    
+<h4>Data Source</h4>
+
 <div id="ph-src">
 </div>
+
+<tr>    
+<h4>Copyright Info</h4>
 
 <div id="ph-copy">
 </div>
