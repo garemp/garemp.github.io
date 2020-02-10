@@ -30,7 +30,9 @@ $().ready(function () {
                 if (n.attributes[i] == "compromise")
                     prop = "compromise";
             }
-            $("tr:last").after("<tr><td>" + (idx + 1) + "</td><td>" + n.label + "</td><td>" + type + "</td><td>" + prop + "</td><td>" + n.crby + "</td><td>" + n.year + "</td><td>" + commet + "</td></tr>");
+            $("#list-body").append("<tr><td>" + (idx + 1) + "</td><td>" + n.label + "</td><td>" + type + "</td><td>" + prop + "</td><td>" + n.crby + "</td><td>" + n.year + "</td><td>" + commet + "</td></tr>");
         })
+        $("thead").prev().remove();
+        $('#list-table').DataTable();
     });
 });
