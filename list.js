@@ -1,3 +1,5 @@
+$('h1').remove();
+
 $().ready(function () {
     $.getJSON("./maps.json", function (data) {
         $("#text").html("JSON file version: " + data["version"]);
