@@ -9,30 +9,22 @@ $().ready(function () {
             var prop = "";
             var commet = "";
             for (i = 0; i < Object.values(n.attributes).length; i++) {
-                if (n.attributes[i] == "cylindrical")
-                    type = "cylindrical";
-                if (n.attributes[i] == "conic")
-                    type = "conic";
-                if (n.attributes[i] == "azimuthal")
-                    type = "azimuthal";
-                if (n.attributes[i] == "equal-area")
+                if (n.attributes[i] == "cylindrical" || n.attributes[i] == "conic" ||
+                    n.attributes[i] == "azimuthal" || n.attributes[i] == "pseudocylindrical" ||
+                    n.attributes[i] == "pseudoconic" || n.attributes[i] == "polyhedral" ||
+                    n.attributes[i] == "miscellaneous")
+                    type = n.attributes[i];
+                if (n.attributes[i] == "equal-area" || n.attributes[i] == "conformal" ||
+                    n.attributes[i] == "equidistant" || n.attributes[i] == "compromise")
                     if (prop == "")
-                        prop = "equal-area";
+                        prop = n.attributes[i];
                     else
-                        prop = prop + ", equal-area";
-                if (n.attributes[i] == "conformal")
-                    prop = "conformal";
-                if (n.attributes[i] == "equidistant")
-                    if (prop == "")
-                        prop = "equidistant";
-                    else
-                        prop = prop + ", equidistant";
-                if (n.attributes[i] == "compromise")
-                    prop = "compromise";
+                        prop = prop + ", " + n.attributes[i];
             }
             $("#list-body").append("<tr><td>" + (idx + 1) + "</td><td>" + n.label + "</td><td>" + type + "</td><td>" + prop + "</td><td>" + n.crby + "</td><td>" + n.year + "</td><td>" + commet + "</td></tr>");
         })
         $("thead").prev().remove();
         $('#list-table').DataTable();
+        $('select').append("<option value='1000'>All</option>");
     });
 });
