@@ -1,6 +1,7 @@
 $('h1').remove();
 
 $().ready(function () {
+    $("#ph-hist").load("./history.html");
     $.getJSON("./maps.json", function (data) {
         $("#text").html("JSON file version: " + data["version"]);
         nodes = data["nodes"];
