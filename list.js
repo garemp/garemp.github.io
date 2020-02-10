@@ -1,5 +1,4 @@
 $('h1').remove();
-$(".footer").remove();
 
 $().ready(function () {
     $("#ph-issue").load("./issue.html");
@@ -33,5 +32,6 @@ $().ready(function () {
         $('select').empty().append("<option value='10'>10</option>").append("<option value='20'>20</option>")
             .append("<option value='30'>30</option>").append("<option value='60'>60</option>").append("<option value='120'>120</option>");
         $(".markdown-body").toggleClass('markdown-body').toggleClass('px-3').toggleClass('my-5').toggleClass('container-lg');
+        $(".footer").remove();
     });
 });
