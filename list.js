@@ -1,7 +1,10 @@
 $('h1').remove();
 
 $().ready(function () {
+    $("#ph-issue").load("./issue.html");
+    $("#ph-copy").load("./copyright.html");
     $("#ph-hist").load("./history.html");
+    $("#ph-src").load("./source.html");
     $.getJSON("./maps.json", function (data) {
         $("#text").html("JSON file version: " + data["version"]);
         nodes = data["nodes"];
@@ -26,6 +29,8 @@ $().ready(function () {
         })
         $("thead").prev().remove();
         $('#list-table').DataTable();
-        $('select').append("<option value='1000'>All</option>");
+        $('select').empty().append("<option value='10'>10</option>").append("<option value='20'>20</option>")
+            .append("<option value='30'>30</option>").append("<option value='60'>60</option>").append("<option value='120'>120</option>");
+        $(".markdown-body").removeAttr('style');
     });
 });
