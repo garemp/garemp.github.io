@@ -15,3 +15,5 @@ http://garemp.github.io/
 ![Previews](https://raw.githubusercontent.com/garemp/garemp.github.io/master/screensnap/index.png)
 
 A full plain list of map projections used in GAREMP is also available at https://garemp.github.io/list.
+
+[DataTables](https://github.com/DataTables/DataTables) is used in the plain list version for contents by sorting, paging, filtering, etc.
