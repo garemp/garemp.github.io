@@ -15,6 +15,9 @@
 </h4>
 <hr>
 
+<div id="ph-issue">
+</div>
+
 <h4>Full plain list of map projections used in GAREMP</h4>
 
 <table id="list-table" class="display">
@@ -34,4 +37,10 @@
 </table>
 
 <div id="ph-hist">
+</div>
+
+<div id="ph-src">
+</div>
+
+<div id="ph-copy">
 </div>
