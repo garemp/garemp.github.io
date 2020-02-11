@@ -5,7 +5,6 @@
 <script src="./list.js"></script>
 
 <head>
-    <title>GAREMP: Graphical Attribute and Relationship Explorer for Map Projections</title>
     <script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101233886);</script>
     <script async src="//static.getclicky.com/js"></script>
 </head>
