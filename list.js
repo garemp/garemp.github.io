@@ -37,5 +37,6 @@ $().ready(function () {
             .append("<option value='30'>30</option>").append("<option value='60'>60</option>").append("<option value='120'>120</option>");
         $(".markdown-body").toggleClass('markdown-body').toggleClass('px-3').toggleClass('my-5').toggleClass('container-lg');
         $(".footer").remove();
+        $(document).attr("title", "GAREMP: Graphical Attribute and Relationship Explorer for Map Projections");
     });
 });
