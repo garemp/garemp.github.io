@@ -10,10 +10,10 @@ All Right Reserved
 
 http://garemp.github.io/
 
-[Sigma.js](http://sigmajs.org) and [jQuery](https://jquery.com) are used in GAREMP.
-
-![Previews](https://raw.githubusercontent.com/garemp/garemp.github.io/master/screensnap/index.png)
-
 A full plain list of map projections used in GAREMP is also available at https://garemp.github.io/list.
 
-[DataTables](https://github.com/DataTables/DataTables) is used in the plain list version for contents by sorting, paging, filtering, etc.
+[Sigma.js](http://sigmajs.org) (for graph drawing) and [jQuery](https://jquery.com) (for page rendering of manipulation) are used in GAREMP.
+
+[DataTables](https://github.com/DataTables/DataTables) (a plug-in for jQuery) is used in the plain list version for contents by sorting, paging, filtering, etc.
+
+![Previews](https://raw.githubusercontent.com/garemp/garemp.github.io/master/screensnap/index.png)
