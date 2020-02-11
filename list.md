@@ -15,9 +15,9 @@
 </h4>
 <hr>
 
-<a href="https://github.com/garemp/garemp.github.io/issues/new">
-<input type=button value="Report Issues" />
-</a>
+<div>
+<a href="https://github.com/garemp/garemp.github.io/issues/new"><input type=button value="Report Issues" /></a>
+</div>
 <div id="ph-issue">
 </div>
 
