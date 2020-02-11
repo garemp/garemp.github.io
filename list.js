@@ -2,6 +2,7 @@ $('h1').remove();
 
 $().ready(function () {
     $("#ph-issue").load("./issue.html");
+    $("<a href='https://github.com/garemp/garemp.github.io/issues/new'><input type=button value='Report Issues' /></a>").insertBefore("#ph-issue");
     $("#ph-copy").load("./copyright.html");
     $("#ph-hist").load("./history.html");
     $("#ph-src").load("./source.html");
@@ -25,7 +26,10 @@ $().ready(function () {
                     else
                         prop = prop + ", " + n.attributes[i];
             }
-            $("#list-body").append("<tr><td>" + (idx + 1) + "</td><td>" + n.label + "</td><td>" + type + "</td><td>" + prop + "</td><td>" + n.crby + "</td><td>" + n.year + "</td><td>" + commet + "</td></tr>");
+            if (typeof n.alias === "undefined")
+                $("#list-body").append("<tr><td>" + (idx + 1) + "</td><td>" + n.label + "</td><td>" + type + "</td><td>" + prop + "</td><td>" + n.crby + "</td><td>" + n.year + "</td><td>" + commet + "</td></tr>");
+            else
+                $("#list-body").append("<tr><td>" + (idx + 1) + "</td><td>" + n.label + " (" + n.alias + ")</td><td>" + type + "</td><td>" + prop + "</td><td>" + n.crby + "</td><td>" + n.year + "</td><td>" + commet + "</td></tr>");
         })
         $("thead").prev().remove();
         $('#list-table').DataTable();
