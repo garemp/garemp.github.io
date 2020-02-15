@@ -9,6 +9,8 @@
 </h4>
 <hr>
 
+<h4>Help for GAREMP</h4>
+
 <div id="ph-help">
 </div>
 
@@ -37,19 +39,19 @@
     </tr>
 </table>
 
-<tr>    
+<hr>    
 <h4>History of GAREMP</h4>
 
 <div id="ph-hist">
 </div>
 
-<tr>    
+<hr>    
 <h4>Data Source</h4>
 
 <div id="ph-src">
 </div>
 
-<tr>    
+<hr>    
 <h4>Copyright Info</h4>
 
 <div id="ph-copy">
