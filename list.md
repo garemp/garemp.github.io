@@ -9,6 +9,11 @@
 </h4>
 <hr>
 
+<div id="ph-help">
+</div>
+
+<hr>
+
 <div id="ph-issue">
 </div>
 
