@@ -315,7 +315,7 @@ $(function () {
               if (year <= v1)
                 found = true;
           }
-          if (found) {
+          if (found && n.cat1viz && n.cat2viz) {
             count_year++;
             // break;
           }
@@ -505,7 +505,7 @@ urls.forEach(function (url) {
               edges[j].defaultcolor = edges[j].color;
             }
 
-            $('#uselent').change();
+            // $('#uselent').change();
 
             // Refresh the display:
             s.refresh();
@@ -519,7 +519,7 @@ urls.forEach(function (url) {
             // Refresh the display:
             s.refresh();
 
-            updateCountinfo(102);
+            updateCountinfo(nodes.length);
 
             nolegendfornodes();
 
@@ -683,15 +683,21 @@ sub_categories.set("authors (inc. aliases)", ["Eckert", "Kavrayskiy", "Lambert",
 function catReset() {
   $("#main-pane").empty();
   $("#minor-pane").empty();
+  var count_year = 0;
   filter
     .undo('categories')
     .nodesBy(function (n) {
+      n.cat1viz = true;
+      n.cat2viz = true;
+      if (n.yearviz) {
+        count_year++;
+      }
       n.type = 'def';
       n.color = '#666';
       return true;
     })
     .apply();
-  updateCountinfo(102);
+  updateCountinfo(count_year);
   nolegendfornodes();
   $('#cat-l1').val('all categories');
   $("#cat-l2").empty();
@@ -905,6 +911,9 @@ function catChange() {
       n.type = ret.type;
       n.color = ret.color;
       n.url = ret.url;
+      n.type2 = ret.type;
+      n.color2 = ret.color;
+      n.url2 = ret.url;
       if (!found)
         n.cat1viz = false;
       if (found && n.cat2viz)
@@ -940,6 +949,9 @@ function subcatChange() {
         n.type = ret.type;
         n.color = ret.color;
         n.url = ret.url;
+        n.type2 = ret.type;
+        n.color2 = ret.color;
+        n.url2 = ret.url;
         if (!found)
           n.cat1viz = false;
         if (found && n.cat2viz)
@@ -1126,6 +1138,9 @@ function morecatChange() {
     filter
       .undo('categories')
       .nodesBy(function (n) {
+        n.type = n.type2;
+        n.color = n.color2;
+        n.url = n.url2;
         if (n.cat1viz)
           viscount++;
         return n.cat1viz;
@@ -1139,6 +1154,9 @@ function morecatChange() {
       .undo('categories')
       .nodesBy(function (n) {
         var found = false;
+        n.type = n.type2;
+        n.color = n.color2;
+        n.url = n.url2;
         for (i = 0; i < Object.values(n.attributes).length; i++) {
           if (n.attributes[i] == sel)
             found = true;
@@ -1195,6 +1213,9 @@ $(document).ready(function () {
   $("#cat-l2").change(subcatChange);
   $("#cat-more").change(morecatChange);
   $('#reset-all').click(catReset);
+  $('#zoom-vis').click(function () {
+    s.refresh();
+  });
   $('#uselent').change(function () {
     uselent = !uselent;
     $('#cat-more').empty();
@@ -1255,9 +1276,15 @@ $(document).ready(function () {
     $(this).stop().fadeOut(3000);
     return false;
   });
+  $("#link-issue-pane").load("./issue.html");
+  $("#link-auth-pane").load("./copyright.html");
+  $("#link-hist-pane").load("./history.html");
+  $("#link-source-pane").load("./source.html");
+  $("#link-help-pane").load("./help.html");
   $(window).resize(function () {
     s.refresh();
   });
+  $("#checkbox-pane").css({'left':$("#copy-pane").width()*0.8333+15})
   var h = $(document).height();
   var w = $(document).width();
   // console.log(h);
