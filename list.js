@@ -1,6 +1,7 @@
 $('h1').remove();
 
 $().ready(function () {
+    $("#ph-help").load("./help.html");
     $("#ph-issue").load("./issue.html");
     $("<a href='https://github.com/garemp/garemp.github.io/issues/new'><input type=button value='Report Issues' /></a>").insertBefore("#ph-issue");
     $("#ph-copy").load("./copyright.html");
