@@ -4,12 +4,6 @@
 <script type="text/javascript" src="./DataTables/datatables.min.js"></script>
 <script src="./list.js"></script>
 
-<head>
-    <title>GAREMP: Graphical Attribute and Relationship Explorer for Map Projections</title>
-    <script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101233886);</script>
-    <script async src="//static.getclicky.com/js"></script>
-</head>
-
 <h4 style="text-align: center;">GAREMP: Graphical Attribute and Relationship Explorer for Map Projections &copy;
     2019-2020 Jin Yan</h4>
 <h4 style="text-align: center;">Analyzing and comparing map projections with <a target='_blank'
@@ -21,6 +15,8 @@
 
 <div id="ph-help">
 </div>
+
+<hr>
 
 <div id="ph-issue">
 </div>
@@ -77,3 +73,7 @@
 </div>
 
 <br>
+
+<script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101233886);</script>
+<script async src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101233886ns.gif" /></p></noscript>
