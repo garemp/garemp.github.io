@@ -44,10 +44,10 @@
     }
 
     if (node.label && typeof node.label === 'string') {
-      x = Math.round(node[prefix + 'x'] - fontSize / 2 - 2);
-      y = Math.round(node[prefix + 'y'] - fontSize / 2 - 2);
+      x = Math.round(node[prefix + 'x'] - context.measureText(node.label).width / 2 - 7);
+      y = Math.round(node[prefix + 'y'] - fontSize / 2 - 2 + node.dy);
       w = Math.round(
-        context.measureText(node.label).width + fontSize / 2 + size + 7
+        context.measureText(node.label).width + fontSize / 2
       );
       h = Math.round(fontSize + 4);
       e = Math.round(fontSize / 2 + 2);
@@ -55,7 +55,9 @@
       context.moveTo(x, y + e);
       context.arcTo(x, y, x + e, y, e);
       context.lineTo(x + w, y);
-      context.lineTo(x + w, y + h);
+      context.arcTo(x + w + e, y, x + w + e, y + e, e);
+      context.arcTo(x + w + e, y + h, x + w, y + h, e);
+      // context.lineTo(x + w, y + h);
       context.lineTo(x + e, y + h);
       context.arcTo(x, y + h, x, y + h - e, e);
       context.lineTo(x, y + e);
@@ -98,9 +100,9 @@
 
       context.fillText(
         node.label,
-        Math.round(node[prefix + 'x'] + size + 3),
-        Math.round(node[prefix + 'y'] + fontSize / 3)
-      );
+        Math.round(node[prefix + 'x'] - context.measureText(node.label).width / 2),
+        Math.round(node[prefix + 'y'] + fontSize / 3 + node.dy)
+        );
     }
   };
 }).call(this);
