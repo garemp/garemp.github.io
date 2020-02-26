@@ -63,6 +63,7 @@
       context.lineTo(x, y + e);
 
       context.closePath();
+      context.fillStyle = node.color;
       context.fill();
 
       context.shadowOffsetX = 0;
