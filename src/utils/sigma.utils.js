@@ -253,6 +253,13 @@
     };
   };
 
+  sigma.utils.getQuadraticControlPointFlip = function(x1, y1, x2, y2) {
+    return {
+      x: (x1 + x2) / 2 - (y2 - y1) / 4,
+      y: (y1 + y2) / 2 - (x1 - x2) / 4
+    };
+  };
+
   /**
     * Compute the coordinates of the point positioned
     * at length t in the quadratic bezier curve.
