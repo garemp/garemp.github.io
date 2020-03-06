@@ -214,7 +214,13 @@
                 }
               }
               else {
-                cp = sigma.utils.getQuadraticControlPoint(
+                cp = (edge.flip === "true") ? 
+                  sigma.utils.getQuadraticControlPointFlip(
+                  source[prefix + 'x'],
+                  source[prefix + 'y'],
+                  target[prefix + 'x'],
+                  target[prefix + 'y']) : 
+                  sigma.utils.getQuadraticControlPoint(
                   source[prefix + 'x'],
                   source[prefix + 'y'],
                   target[prefix + 'x'],
